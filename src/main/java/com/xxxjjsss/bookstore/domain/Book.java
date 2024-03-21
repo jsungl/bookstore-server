@@ -26,4 +26,11 @@ public class Book extends BaseTimeEntity{
     private Double price;
 
 
+    public void update(Book book) {
+        this.title = book.getTitle();
+        this.description = book.getDescription();
+        this.price = book.getPrice();
+        this.imageUrl = book.getImageUrl();
+    }
+
 }

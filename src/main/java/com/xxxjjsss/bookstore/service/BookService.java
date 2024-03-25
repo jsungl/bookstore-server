@@ -5,6 +5,7 @@ import com.xxxjjsss.bookstore.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class BookService {
         return bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("bookId is invalid"));
     }
 
-    public Book saveBook(Book book) {
+    public Book addBook(Book book) {
         return bookRepository.save(book);
     }
 
@@ -33,7 +34,16 @@ public class BookService {
         book.update(bookDto);
     }
 
-    public void deleteBookById(Book book) {
+    public void deleteBookById(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("bookId is invalid"));
         bookRepository.delete(book);
+    }
+
+    public List<Book> findBook(String keyword) {
+        if(StringUtils.hasText(keyword)) {
+            return bookRepository.findByTitleLikeIgnoreCase("%" + keyword + "%");
+        } else {
+            return bookRepository.findAll();
+        }
     }
 }

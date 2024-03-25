@@ -36,8 +36,8 @@ public class BookController {
      * 등록
      */
     @PostMapping("/addBook")
-    public void saveBook(@RequestBody Book book) {
-        bookService.saveBook(book);
+    public void addBook(@RequestBody Book book) {
+        bookService.addBook(book);
     }
 
     /**
@@ -53,7 +53,15 @@ public class BookController {
      */
     @DeleteMapping("/deleteBook/{bookId}")
     public void deleteBook(@PathVariable Long bookId) {
-        Book book = bookService.getBookById(bookId);
-        bookService.deleteBookById(book);
+        bookService.deleteBookById(bookId);
+    }
+
+    /**
+     * 검색
+     * 기본 - 제목검색
+     */
+    @GetMapping("/search")
+    public List<Book> searchBook(@RequestParam("keyword") String keyword) {
+        return bookService.findBook(keyword);
     }
 }

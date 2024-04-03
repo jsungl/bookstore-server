@@ -1,5 +1,6 @@
 package com.xxxjjsss.bookstore.domain;
 
+import com.xxxjjsss.bookstore.dto.BookRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +27,7 @@ public class Book extends BaseTimeEntity{
     private Double price;
 
 
-    public void update(Book book) {
+    public void update(BookRequestDto book) {
         this.title = book.getTitle();
         this.description = book.getDescription();
         this.price = book.getPrice();

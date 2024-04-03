@@ -1,16 +1,13 @@
 package com.xxxjjsss.bookstore.dto;
 
 import com.xxxjjsss.bookstore.domain.Book;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.format.DateTimeFormatter;
 
 //@Data
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class BookResponseDto {
 
     private Long bookId;

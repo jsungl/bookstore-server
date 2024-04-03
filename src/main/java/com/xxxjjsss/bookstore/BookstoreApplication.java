@@ -15,7 +15,7 @@ public class BookstoreApplication {
 		SpringApplication.run(BookstoreApplication.class, args);
 	}
 
-	@Bean
+	//@Bean
 	@Profile("local")
 	public TestDataInit testDataInit(BookRepository bookRepository) {
 		return new TestDataInit(bookRepository);

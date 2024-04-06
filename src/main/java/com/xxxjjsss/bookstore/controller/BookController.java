@@ -4,6 +4,7 @@ import com.xxxjjsss.bookstore.dto.BookRequestDto;
 import com.xxxjjsss.bookstore.dto.BookResponseDto;
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;
 import com.xxxjjsss.bookstore.service.BookService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +70,7 @@ public class BookController {
      * HTTP 응답 상태 코드 201은 서버에서 리소스가 생성되었음을 나타낸다.
      */
     @PostMapping
-    public ApiResponse<BookResponse> addBook(@RequestBody BookRequestDto bookDto) {
+    public ApiResponse<BookResponse> addBook(@Valid @RequestBody BookRequestDto bookDto) {
         BookResponseDto result = bookService.addBook(bookDto);
         return ApiResponse.success(new BookResponse(result));
     }

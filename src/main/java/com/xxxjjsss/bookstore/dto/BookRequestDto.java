@@ -1,6 +1,10 @@
 package com.xxxjjsss.bookstore.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
+
 
 /**
  * "cannot deserialize from object value (no delegate- or property-based creator)" 와 같은 에러 발생한다면
@@ -14,10 +18,23 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookRequestDto {
+//    @NotBlank(message = "Please enter a title.", groups = NotBlankGroup.class)
+//    private String title;
+//    @NotBlank(message = "Please enter a description.", groups = NotBlankGroup.class)
+//    private String description;
+//    @NotBlank(message = "Please enter a image URL.", groups = NotBlankGroup.class)
+//    private String imageUrl;
+//    @Range(min = 1, max = 999, message = "The price must be between ${min} and ${max}", groups = PriceRangeCheckGroup.class)
+//    private Double price;
 
+    @NotBlank(message = "Please enter a title.")
     private String title;
+    @NotBlank(message = "Please enter a description.")
     private String description;
+    @NotBlank(message = "Please enter a image URL.")
     private String imageUrl;
+    @NotNull(message = "Please enter a price.")
+    @Range(min = 1, max = 999, message = "The price must be between ${min} and ${max}")
     private Double price;
 
 }

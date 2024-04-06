@@ -15,6 +15,7 @@ public enum ErrorCode {
 
     //400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "E4001", "잘못된 요청입니다."),
+    REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "E4002", "유효성 검증에 실패하였습니다."),
 
     //401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E4011", "인증이 필요합니다."),

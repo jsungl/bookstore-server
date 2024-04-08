@@ -79,7 +79,7 @@ public class BookController {
      * 수정
      */
     @PutMapping("/{bookId}")
-    public ApiResponse<BookResponse> updateBook(@PathVariable Long bookId, @RequestBody BookRequestDto bookDto) {
+    public ApiResponse<BookResponse> updateBook(@PathVariable Long bookId, @Valid @RequestBody BookRequestDto bookDto) {
         BookResponseDto result = bookService.updateBook(bookId, bookDto);
         return ApiResponse.success(new BookResponse(result));
     }

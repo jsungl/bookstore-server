@@ -15,7 +15,7 @@ public enum ErrorCode {
 
     //400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "E4001", "잘못된 요청입니다."),
-    REGISTRATION_FAILED(HttpStatus.BAD_REQUEST, "E4002", "유효성 검증에 실패하였습니다."),
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "E4002", "유효성 검증에 실패하였습니다."),
 
     //401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E4011", "인증이 필요합니다."),
@@ -33,7 +33,8 @@ public enum ErrorCode {
     //409
     BOOK_NAME_ALREADY_EXIST(HttpStatus.CONFLICT, "E4091", "이미 존재하는 제목입니다."),
     USER_ID_ALREADY_EXIST(HttpStatus.CONFLICT, "E4092", "이미 존재하는 아이디입니다."),
-    USER_NAME_ALREADY_EXIST(HttpStatus.CONFLICT, "E4093", "이미 존재하는 닉네임입니다."),
+    USER_EMAIL_ALREADY_EXIST(HttpStatus.CONFLICT, "E4093", "이미 존재하는 이메일입니다."),
+    USER_NAME_ALREADY_EXIST(HttpStatus.CONFLICT, "E4094", "이미 존재하는 닉네임입니다."),
 
     //500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E5001", "서버에 오류가 발생하였습니다.");

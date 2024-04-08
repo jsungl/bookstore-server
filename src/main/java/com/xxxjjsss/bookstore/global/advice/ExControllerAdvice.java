@@ -1,9 +1,7 @@
 package com.xxxjjsss.bookstore.global.advice;
 
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;
-import com.xxxjjsss.bookstore.global.exception.ApiException;
-import com.xxxjjsss.bookstore.global.exception.ErrorCode;
-import com.xxxjjsss.bookstore.global.exception.ExceptionDto;
+import com.xxxjjsss.bookstore.global.exception.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +28,13 @@ public class ExControllerAdvice {
         private final ExceptionDto error;
     }
 
+    @Getter
+    @AllArgsConstructor
+    class Result<T> {
+        private T error;
+    }
+
+
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ApiResponse> ApiExHandle(ApiException e) {
         ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode());
@@ -41,32 +46,41 @@ public class ExControllerAdvice {
                 .body(result);
     }
 
+    //중복 검사
+    @ExceptionHandler(DuplicatedException.class)
+    public ResponseEntity<ApiResponse> DuplicatedExHandle(DuplicatedException e) {
+
+        Map<String, Object> errorMap = new HashMap<>();
+        errorMap.put("errorCode", e.getErrorCode().getCode());
+        errorMap.put("errorMessage", e.getErrorCode().getMsg());
+        errorMap.put("errorField", e.getErrorField());
+
+        ApiResponse<Result> result = ApiResponse.fail(new Result(errorMap));
+
+        return ResponseEntity
+                .status(e.getErrorCode().getStatus())
+                .body(result);
+    }
+
 
     //유효성 검증 실패
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse> MethodArgumentNotValidExHandle(MethodArgumentNotValidException e) {
 
-//        FieldError error = e.getBindingResult().getFieldErrors().get(0);
-//
-//        String fieldName = error.getField();
-//        String defaultMessage = error.getDefaultMessage();
-//
-//        ExceptionDto exceptionDto = new ExceptionDto(ErrorCode.BAD_REQUEST, defaultMessage, fieldName);
-//        ApiResponse<ErrorResponse> result = ApiResponse.fail(new ErrorResponse(exceptionDto));
-
-
-
         Map<String, Object> errorMap = new HashMap<>();
+        Map<String, Object> errorFieldMap = new HashMap<>();
         for(FieldError error : e.getBindingResult().getFieldErrors()) {
-            errorMap.put(error.getField(), error.getDefaultMessage());
+            errorFieldMap.put(error.getField(), error.getDefaultMessage());
         }
 
-        ExceptionDto exceptionDto = new ExceptionDto(ErrorCode.REGISTRATION_FAILED, errorMap);
-        ApiResponse<ErrorResponse> result = ApiResponse.fail(new ErrorResponse(exceptionDto));
+        errorMap.put("errorCode", ErrorCode.VALIDATION_FAILED.getCode());
+        errorMap.put("errorMessage", ErrorCode.VALIDATION_FAILED.getMsg());
+        errorMap.put("errorField", errorFieldMap);
 
+        ApiResponse<Result> result = ApiResponse.fail(new Result(errorMap));
 
         return ResponseEntity
-                .status(ErrorCode.REGISTRATION_FAILED.getStatus())
+                .status(ErrorCode.VALIDATION_FAILED.getStatus())
                 .body(result);
     }
 

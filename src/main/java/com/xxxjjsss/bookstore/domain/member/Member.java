@@ -4,6 +4,7 @@ import com.xxxjjsss.bookstore.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+@ToString
 @Getter
 @Entity
 @Builder
@@ -30,5 +31,11 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    public Member(String memberId, String password, Role role) {
+        this.memberId = memberId;
+        this.password = password;
+        this.role = role;
+    }
 
 }

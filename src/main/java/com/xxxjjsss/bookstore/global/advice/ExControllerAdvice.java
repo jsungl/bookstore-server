@@ -88,7 +88,7 @@ public class ExControllerAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> ExHandle(Exception e) {
 
-        log.error("error message {}", e.getMessage());
+        log.error("error", e);
 
         ExceptionDto exceptionDto = new ExceptionDto(ErrorCode.INTERNAL_SERVER_ERROR);
         ApiResponse<ErrorResponse> result = ApiResponse.fail(new ErrorResponse(exceptionDto));

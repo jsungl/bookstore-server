@@ -32,8 +32,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 로그인, 로그아웃 제외
-        if (request.getRequestURI().equals("/api/members/login") || request.getRequestURI().equals("/api/members/logout")) {
+        // 로그인 제외
+        if (request.getRequestURI().equals("/api/members/login")) {
             filterChain.doFilter(request, response);
             return;
         }

@@ -97,11 +97,25 @@ public class MemberApiController {
         private final MemberResponseDto member;
     }
 
+    /**
+     * 내 정보 조회
+     * 로그인 확인
+     */
     @GetMapping("/me")
     public ApiResponse<MeResponseBody> me() {
         Member member = rq.getMember();
         log.info("member={}", member);
 
         return ApiResponse.success(new MeResponseBody(new MemberResponseDto(member)));
+    }
+
+    /**
+     * 로그아웃
+     */
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout() {
+        rq.removeCrossDomainCookie("accessToken");
+
+        return ApiResponse.success(null);
     }
 }

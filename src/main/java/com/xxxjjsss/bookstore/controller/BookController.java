@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -93,5 +92,13 @@ public class BookController {
         bookService.deleteBookById(bookId);
     }
 
+/*
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{bookId}")
+    public ApiResponse<Void> deleteBook(@PathVariable Long bookId) {
+        bookService.deleteBookById(bookId);
+        return ApiResponse.success(null);
+    }
+*/
 
 }

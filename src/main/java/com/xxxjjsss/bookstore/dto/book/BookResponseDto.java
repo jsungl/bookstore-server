@@ -1,6 +1,6 @@
-package com.xxxjjsss.bookstore.dto;
+package com.xxxjjsss.bookstore.dto.book;
 
-import com.xxxjjsss.bookstore.domain.Book;
+import com.xxxjjsss.bookstore.domain.book.Book;
 import lombok.*;
 
 import java.time.format.DateTimeFormatter;

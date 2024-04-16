@@ -1,4 +1,4 @@
-package com.xxxjjsss.bookstore.dto;
+package com.xxxjjsss.bookstore.dto.login;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

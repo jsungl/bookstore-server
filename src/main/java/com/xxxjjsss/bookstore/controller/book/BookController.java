@@ -1,9 +1,9 @@
-package com.xxxjjsss.bookstore.controller;
+package com.xxxjjsss.bookstore.controller.book;
 
-import com.xxxjjsss.bookstore.dto.BookRequestDto;
-import com.xxxjjsss.bookstore.dto.BookResponseDto;
+import com.xxxjjsss.bookstore.dto.book.BookRequestDto;
+import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;
-import com.xxxjjsss.bookstore.service.BookService;
+import com.xxxjjsss.bookstore.service.book.BookService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

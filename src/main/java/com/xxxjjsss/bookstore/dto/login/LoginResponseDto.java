@@ -1,4 +1,4 @@
-package com.xxxjjsss.bookstore.dto;
+package com.xxxjjsss.bookstore.dto.login;
 
 import com.xxxjjsss.bookstore.domain.member.Member;
 import lombok.AllArgsConstructor;

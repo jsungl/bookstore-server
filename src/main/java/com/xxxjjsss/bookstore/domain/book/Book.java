@@ -1,6 +1,7 @@
-package com.xxxjjsss.bookstore.domain;
+package com.xxxjjsss.bookstore.domain.book;
 
-import com.xxxjjsss.bookstore.dto.BookRequestDto;
+import com.xxxjjsss.bookstore.domain.BaseTimeEntity;
+import com.xxxjjsss.bookstore.dto.book.BookRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //JPA는 Public 또는 Protected의 기본 생성자가 필수이다. 따라서 기본 생성자를 넣어주거나 @NoArgsConstructor 를 사용해준다
-public class Book extends BaseTimeEntity{
+public class Book extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

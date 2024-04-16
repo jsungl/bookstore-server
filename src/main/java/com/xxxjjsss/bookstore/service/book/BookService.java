@@ -1,11 +1,11 @@
-package com.xxxjjsss.bookstore.service;
+package com.xxxjjsss.bookstore.service.book;
 
-import com.xxxjjsss.bookstore.domain.Book;
-import com.xxxjjsss.bookstore.dto.BookRequestDto;
-import com.xxxjjsss.bookstore.dto.BookResponseDto;
+import com.xxxjjsss.bookstore.domain.book.Book;
+import com.xxxjjsss.bookstore.dto.book.BookRequestDto;
+import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.global.exception.ApiException;
 import com.xxxjjsss.bookstore.global.exception.ErrorCode;
-import com.xxxjjsss.bookstore.repository.BookRepository;
+import com.xxxjjsss.bookstore.repository.book.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

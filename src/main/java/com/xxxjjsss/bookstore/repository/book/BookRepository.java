@@ -1,6 +1,6 @@
-package com.xxxjjsss.bookstore.repository;
+package com.xxxjjsss.bookstore.repository.book;
 
-import com.xxxjjsss.bookstore.domain.Book;
+import com.xxxjjsss.bookstore.domain.book.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

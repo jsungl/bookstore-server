@@ -1,110 +1,52 @@
 package com.xxxjjsss.bookstore.global.security;
 
-import com.xxxjjsss.bookstore.global.jwt.JwtAuthorizationFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.Collections;
-
-
-/**
- * Spring Security Config 클래스
- *
- */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
-@Slf4j
 public class SecurityConfig {
-
-    private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final AccessDeniedHandler accessDeniedHandler;
-
-    private static final String[] ALLOWED_URIS = {"/api/books", "/api/books/*"};
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // 정적 리소스 spring security 대상에서 제외
+        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+        /**
+         * h2 허용 설정
+         * CSRF 옵션과 SameOrigin 정책을 허용시켜서 iframe에 대한 접근이 허용되도록 설정이 있어야 Forbbiden(403) 이 나오지 않고 정상적으로 접근 및 테스트가 가능
+         */
         http
-                .cors((cors) -> cors.configurationSource(new CorsConfigurationSource() {
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                        CorsConfiguration configuration = new CorsConfiguration();
-
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
-                        configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));
-                        configuration.setMaxAge(3600L);
-
-                        //configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                        return configuration;
-                    }
-                }));
-
-        //csrf disable
-        http
-                .csrf((auth) -> auth.disable());
-
-        //From 로그인 방식 disable
-        http
-                .formLogin((auth) -> auth.disable());
-
-        //http basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
-
-        //세션 끄기
-        http
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        //경로별 인가 작업
-        http
-                .securityMatcher("/api/**")
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(ALLOWED_URIS).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/members/register").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/members/login").permitAll()
-                        .requestMatchers("/api/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated());
-
-        //JwtAuthorizationFilter 등록
-        http
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        //spring security 인증/인가 예외처리
-        http
-                .exceptionHandling(handler -> handler
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                        .accessDeniedHandler(accessDeniedHandler)
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+                .csrf(
+                        csrf -> csrf
+                                .ignoringRequestMatchers("/h2-console/**"))
+                .headers(
+                        headersConfigurer ->
+                                headersConfigurer
+                                        .frameOptions(
+                                                HeadersConfigurer.FrameOptionsConfig::sameOrigin
+                                        )
                 );
 
-
-
         return http.build();
-    }
 
+    }
 }

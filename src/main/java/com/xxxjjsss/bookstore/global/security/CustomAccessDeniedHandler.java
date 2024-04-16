@@ -20,8 +20,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        log.info("인가 실패! 접근 권한이 없습니다.");
-        log.info("AccessDeniedHandler() 실행");
+        log.info("인가 실패! 접근 권한이 없습니다. AccessDeniedHandler() 실행");
 
         response.setStatus(ErrorCode.FORBIDDEN.getStatus().value());
         response.setContentType("application/json");

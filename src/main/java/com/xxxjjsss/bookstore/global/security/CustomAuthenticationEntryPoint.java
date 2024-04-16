@@ -21,8 +21,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
-        log.info("인증 실패!");
-        log.info("AuthenticationEntryPoint() 실행");
+        log.info("인증 실패! AuthenticationEntryPoint() 실행");
 
         ErrorCode errorCode = (ErrorCode) request.getAttribute("JwtException");
         //log.info("errorCode={}", errorCode);

@@ -2,7 +2,7 @@ package com.xxxjjsss.bookstore.service.member;
 
 import com.xxxjjsss.bookstore.domain.member.Member;
 import com.xxxjjsss.bookstore.domain.member.Role;
-import com.xxxjjsss.bookstore.dto.LoginResponseDto;
+import com.xxxjjsss.bookstore.dto.login.LoginResponseDto;
 import com.xxxjjsss.bookstore.dto.member.MemberRequestDto;
 import com.xxxjjsss.bookstore.global.exception.ApiException;
 import com.xxxjjsss.bookstore.global.exception.DuplicatedException;

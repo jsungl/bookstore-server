@@ -1,8 +1,8 @@
 package com.xxxjjsss.bookstore.controller.member;
 
 import com.xxxjjsss.bookstore.domain.member.Member;
-import com.xxxjjsss.bookstore.dto.LoginRequestDto;
-import com.xxxjjsss.bookstore.dto.LoginResponseDto;
+import com.xxxjjsss.bookstore.dto.login.LoginRequestDto;
+import com.xxxjjsss.bookstore.dto.login.LoginResponseDto;
 import com.xxxjjsss.bookstore.dto.member.MemberRequestDto;
 import com.xxxjjsss.bookstore.dto.member.MemberResponseDto;
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;

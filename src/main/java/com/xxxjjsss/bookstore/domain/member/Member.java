@@ -1,10 +1,12 @@
 package com.xxxjjsss.bookstore.domain.member;
 
 import com.xxxjjsss.bookstore.domain.BaseTimeEntity;
+import com.xxxjjsss.bookstore.domain.book.Book;
 import jakarta.persistence.*;
 import lombok.*;
 
-@ToString
+import java.util.List;
+
 @Getter
 @Entity
 @Builder
@@ -31,6 +33,9 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Book> books;
 
     public Member(String memberId, String password, Role role) {
         this.memberId = memberId;

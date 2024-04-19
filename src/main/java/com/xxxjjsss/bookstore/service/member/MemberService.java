@@ -1,13 +1,18 @@
 package com.xxxjjsss.bookstore.service.member;
 
+import com.xxxjjsss.bookstore.domain.book.Book;
 import com.xxxjjsss.bookstore.domain.member.Member;
+import com.xxxjjsss.bookstore.domain.member.MemberRefreshToken;
 import com.xxxjjsss.bookstore.domain.member.Role;
+import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.dto.login.LoginResponseDto;
 import com.xxxjjsss.bookstore.dto.member.MemberRequestDto;
 import com.xxxjjsss.bookstore.global.exception.ApiException;
 import com.xxxjjsss.bookstore.global.exception.DuplicatedException;
 import com.xxxjjsss.bookstore.global.exception.ErrorCode;
 import com.xxxjjsss.bookstore.global.jwt.JwtProvider;
+import com.xxxjjsss.bookstore.global.security.SecurityUser;
+import com.xxxjjsss.bookstore.repository.member.MemberRefreshTokenRepository;
 import com.xxxjjsss.bookstore.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +32,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final MemberRefreshTokenRepository memberRefreshTokenRepository;
 
     @Transactional
     public Member join(MemberRequestDto memberRequestDto) {
@@ -58,7 +65,7 @@ public class MemberService {
 
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public LoginResponseDto login(String username, String password) {
 //        Member member = memberRepository.findByMemberId(username).orElseThrow(() -> new UsernameNotFoundException("member is not exist"));
         Member member = memberRepository.findByMemberId(username).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
@@ -68,10 +75,17 @@ public class MemberService {
             throw new ApiException(ErrorCode.PASSWORD_NOT_MATCHED);
         }
 
-        //String accessToken = jwtUtil.createJwt(member.getMemberId(), member.getRole().name(), 60 * 60 * 1000L);
-        String accessToken = jwtProvider.createJwt(member, 60 * 60 * 1000L);
+        String accessToken = jwtProvider.createAccessToken(member, 60 * 30);
+        String refreshToken = jwtProvider.createRefreshToken(60 * 60 * 24 * 7);
 
-        return new LoginResponseDto(member, accessToken, "");
+        // 리프레시 토큰이 이미 있으면 토큰을 갱신하고 없으면 토큰을 추가
+        memberRefreshTokenRepository.findByMemberId(member.getId())
+                .ifPresentOrElse(
+                        memberRefreshToken -> memberRefreshToken.updateRefreshToken(refreshToken),
+                        () -> memberRefreshTokenRepository.save(new MemberRefreshToken(member,refreshToken))
+                );
+
+        return new LoginResponseDto(member, accessToken, refreshToken);
     }
 
 
@@ -83,5 +97,19 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Optional<Member> getMember(String username) {
         return memberRepository.findByMemberId(username);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookResponseDto> getAllBooks(SecurityUser user) {
+        String username = user.getUsername();
+        Member member = memberRepository.findByMemberId(username).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+
+        List<Book> books = member.getBooks();
+
+        return books.stream()
+                .map(book -> BookResponseDto.builder()
+                        .book(book)
+                        .build())
+                .collect(Collectors.toList());
     }
 }

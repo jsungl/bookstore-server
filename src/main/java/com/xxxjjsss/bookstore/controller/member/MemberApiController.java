@@ -1,18 +1,22 @@
 package com.xxxjjsss.bookstore.controller.member;
 
 import com.xxxjjsss.bookstore.domain.member.Member;
+import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.dto.login.LoginRequestDto;
 import com.xxxjjsss.bookstore.dto.login.LoginResponseDto;
+import com.xxxjjsss.bookstore.dto.member.MemberDto;
 import com.xxxjjsss.bookstore.dto.member.MemberRequestDto;
 import com.xxxjjsss.bookstore.dto.member.MemberResponseDto;
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;
 import com.xxxjjsss.bookstore.global.rq.Rq;
+import com.xxxjjsss.bookstore.global.security.SecurityUser;
 import com.xxxjjsss.bookstore.service.member.MemberService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,11 +44,6 @@ public class MemberApiController {
     @GetMapping
     public ApiResponse<MembersResponse> getAllMembers() {
         List<Member> members = memberService.getAllMembers();
-/*
-        List<MemberResponseDto> collect = members.stream()
-                .map(m -> MemberResponseDto.builder().member(m).build())
-                .collect(Collectors.toList());
-*/
 
         List<MemberResponseDto> collect = members.stream()
                 .map(MemberResponseDto::new)
@@ -56,17 +55,16 @@ public class MemberApiController {
     @Getter
     @AllArgsConstructor
     public static class MemberResponse {
-        private final MemberResponseDto member;
+        private final MemberDto member;
     }
 
     /**
      * 회원가입
      */
     @PostMapping("/register")
-    public ApiResponse<MemberResponse> addMember(@Valid @RequestBody MemberRequestDto memberRequestDto) {
+    public ApiResponse<MemberResponse> join(@Valid @RequestBody MemberRequestDto memberRequestDto) {
         Member member = memberService.join(memberRequestDto);
-//        MemberResponseDto dto = MemberResponseDto.builder().member(member).build();
-        return ApiResponse.success(new MemberResponse(new MemberResponseDto(member)));
+        return ApiResponse.success(new MemberResponse(new MemberDto(member)));
     }
 
 
@@ -85,9 +83,22 @@ public class MemberApiController {
 
         // 토큰 쿠키에 등록
         rq.setCrossDomainCookie("accessToken", dto.getAccessToken());
+        rq.setCrossDomainCookie("refreshToken", dto.getRefreshToken());
 
         return ApiResponse.success(new LoginResponseBody(new MemberResponseDto(dto.getMember())));
 
+    }
+
+
+    /**
+     * 로그아웃
+     */
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout() {
+        rq.removeCrossDomainCookie("accessToken");
+        rq.removeCrossDomainCookie("refreshToken");
+
+        return ApiResponse.success(null);
     }
 
     @Getter
@@ -96,6 +107,7 @@ public class MemberApiController {
         private final MemberResponseDto member;
     }
 
+
     /**
      * 내 정보 조회
      * 로그인 확인
@@ -103,18 +115,18 @@ public class MemberApiController {
     @GetMapping("/me")
     public ApiResponse<MeResponseBody> me() {
         Member member = rq.getMember();
-        log.info("member={}", member);
-
         return ApiResponse.success(new MeResponseBody(new MemberResponseDto(member)));
     }
 
-    /**
-     * 로그아웃
-     */
-    @PostMapping("/logout")
-    public ApiResponse<Void> logout() {
-        rq.removeCrossDomainCookie("accessToken");
+    @Getter
+    @AllArgsConstructor
+    public static class BooksResponse {
+        private final List<BookResponseDto> books;
+    }
 
-        return ApiResponse.success(null);
+    @GetMapping("/book")
+    public ApiResponse<BooksResponse> getAllBooks(@AuthenticationPrincipal SecurityUser user) {
+        List<BookResponseDto> result = memberService.getAllBooks(user);
+        return ApiResponse.success(new BooksResponse(result));
     }
 }

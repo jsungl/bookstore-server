@@ -20,10 +20,12 @@ public enum ErrorCode {
 
     //401
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E4011", "인증이 필요합니다."),
-    INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "E4012", "토큰이 유효하지 않습니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "E4012", "토큰이 유효하지 않습니다."),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "E4013", "액세스 토큰이 만료되었습니다. 새로고침하거나 다시 로그인해주세요."),
     WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "E4014", "올바르지 않은 토큰입니다."),
     PASSWORD_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "E4015", "비밀번호가 일치하지 않습니다."),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "E4016", "갱신 토큰이 만료되었습니다. 다시 로그인해주세요."),
+
 
     //403
     FORBIDDEN(HttpStatus.FORBIDDEN, "E4031", "접근 권한이 없습니다."),

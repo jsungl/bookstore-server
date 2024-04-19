@@ -1,6 +1,7 @@
 package com.xxxjjsss.bookstore.domain.book;
 
 import com.xxxjjsss.bookstore.domain.BaseTimeEntity;
+import com.xxxjjsss.bookstore.domain.member.Member;
 import com.xxxjjsss.bookstore.dto.book.BookRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,10 @@ public class Book extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Double price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Member member;
 
 
     public void update(BookRequestDto book) {

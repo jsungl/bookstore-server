@@ -3,6 +3,7 @@ package com.xxxjjsss.bookstore.controller.book;
 import com.xxxjjsss.bookstore.dto.book.BookRequestDto;
 import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;
+import com.xxxjjsss.bookstore.global.security.SecurityUser;
 import com.xxxjjsss.bookstore.service.book.BookService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,8 +71,8 @@ public class BookController {
      * HTTP 응답 상태 코드 201은 서버에서 리소스가 생성되었음을 나타낸다.
      */
     @PostMapping
-    public ApiResponse<BookResponse> addBook(@Valid @RequestBody BookRequestDto bookDto) {
-        BookResponseDto result = bookService.addBook(bookDto);
+    public ApiResponse<BookResponse> addBook(@Valid @RequestBody BookRequestDto bookDto, @AuthenticationPrincipal SecurityUser user) {
+        BookResponseDto result = bookService.addBook(bookDto, user);
         return ApiResponse.success(new BookResponse(result));
     }
 

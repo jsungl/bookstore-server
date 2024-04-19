@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.time.format.DateTimeFormatter;
 
-//@Data
 @Getter
 @AllArgsConstructor
 public class BookResponseDto {
@@ -15,6 +14,7 @@ public class BookResponseDto {
     private String description;
     private String imageUrl;
     private Double price;
+    private Long sellerId;
     private String createdDate;
     private String modifiedDate;
 
@@ -25,6 +25,7 @@ public class BookResponseDto {
         this.description = book.getDescription();
         this.imageUrl = book.getImageUrl();
         this.price = book.getPrice();
+        this.sellerId = book.getMember().getId();
         this.createdDate = book.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.modifiedDate = book.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }

@@ -1,11 +1,14 @@
 package com.xxxjjsss.bookstore.service.book;
 
 import com.xxxjjsss.bookstore.domain.book.Book;
+import com.xxxjjsss.bookstore.domain.member.Member;
 import com.xxxjjsss.bookstore.dto.book.BookRequestDto;
 import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.global.exception.ApiException;
 import com.xxxjjsss.bookstore.global.exception.ErrorCode;
+import com.xxxjjsss.bookstore.global.security.SecurityUser;
 import com.xxxjjsss.bookstore.repository.book.BookRepository;
+import com.xxxjjsss.bookstore.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 목록조회
@@ -61,18 +65,20 @@ public class BookService {
     /**
      * 등록
      */
-    public BookResponseDto addBook(BookRequestDto bookDto) {
+    public BookResponseDto addBook(BookRequestDto bookDto, SecurityUser user) {
+        String username = user.getUsername();
+        Member member = memberRepository.findByMemberId(username).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
 
         Book book = Book.builder()
                 .title(bookDto.getTitle())
                 .description(bookDto.getDescription())
                 .imageUrl(bookDto.getImageUrl())
                 .price(bookDto.getPrice())
+                .member(member)
                 .build();
 
         Book saved = bookRepository.save(book);
         return BookResponseDto.builder().book(saved).build();
-
     }
 
     /**
@@ -85,6 +91,7 @@ public class BookService {
         Book saved = bookRepository.save(book);
         return BookResponseDto.builder().book(saved).build();
     }
+
 
     /**
      * 삭제
@@ -112,4 +119,8 @@ public class BookService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+
+
+
 }

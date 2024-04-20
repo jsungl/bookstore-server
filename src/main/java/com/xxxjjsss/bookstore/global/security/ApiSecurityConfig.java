@@ -90,7 +90,7 @@ public class ApiSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/members/register").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/members/login").permitAll()
-                        .requestMatchers("/api/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/members").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
         //JwtAuthorizationFilter 등록

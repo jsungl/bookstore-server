@@ -10,17 +10,17 @@ import lombok.Getter;
 public class MemberDto {
 
     private Long id;
-    private String memberId;
+    private String username;
     private String email;
     private String nickname;
-    private String roleValue;
+    private String role;
 
     @Builder
     public MemberDto(Member member) {
         this.id = member.getId();
-        this.memberId = member.getMemberId();
+        this.username = member.getMemberId();
         this.email = member.getEmail();
         this.nickname = member.getNickname();
-        this.roleValue = member.getRole().getValue();
+        this.role = member.getRole().name();
     }
 }

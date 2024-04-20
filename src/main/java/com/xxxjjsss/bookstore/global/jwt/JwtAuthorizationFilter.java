@@ -17,6 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * 요청에 담긴 JWT를 검증하기 위한 커스텀 필터
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -32,30 +35,30 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         log.info("request={}", request.getRequestURI());
 
-        // 로그인 제외
-        if (request.getRequestURI().equals("/api/members/login")) {
+        // 로그인, 회원가입 제외
+        if (request.getRequestURI().equals("/api/members/login") || request.getRequestURI().equals("/api/members/register")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         log.info("==========인가/권한 검증 : JwtAuthorizationFilter 실행==========");
 
-        String accessToken = rq.getCookieValue("accessToken", "");
+        String accessToken = rq.getCookieValue("accessToken");
 
-        log.info("accessToken is {}", !accessToken.isBlank());
+        // log.info("accessToken is {}", !accessToken.isBlank());
 
         try {
             if (!accessToken.isBlank()) {
 
                 if(!jwtProvider.validateAccessToken(accessToken)) {
-                    log.info("access token 만료");
-                    String refreshToken = rq.getCookieValue("refreshToken", "");
+                    // log.info("access token 만료");
+                    String refreshToken = rq.getCookieValue("refreshToken");
                     memberRefreshTokenService.validateRefreshToken(accessToken, refreshToken);
                     accessToken = memberRefreshTokenService.recreateAccessToken(accessToken);
                     rq.setCrossDomainCookie("accessToken", accessToken);
                 }
 
-                // securityUser 가져오기
+                // securityUser 생성
                 SecurityUser securityUser = jwtProvider.getUserFromAccessToken(accessToken);
 
                 //세션에 사용자 등록(로그인 처리)

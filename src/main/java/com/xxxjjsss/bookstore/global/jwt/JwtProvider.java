@@ -69,7 +69,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .claim("id", member.getId())
                 .claim("username", member.getMemberId())
-                .claim("role", member.getRole().name())
+                .claim("role", member.getRole().getValue())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000L * expiredMs))
                 .signWith(secretKey)

@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/members")
-public class MemberApiController {
+public class MemberController {
 
     private final MemberService memberService;
     private final Rq rq;
@@ -39,7 +40,7 @@ public class MemberApiController {
     }
 
     /**
-     * 목록 조회
+     * 회원 목록 조회
      */
     @GetMapping
     public ApiResponse<MembersResponse> getAllMembers() {
@@ -118,6 +119,8 @@ public class MemberApiController {
         return ApiResponse.success(new MeResponseBody(new MemberResponseDto(member)));
     }
 
+
+/*
     @Getter
     @AllArgsConstructor
     public static class BooksResponse {
@@ -129,4 +132,5 @@ public class MemberApiController {
         List<BookResponseDto> result = memberService.getAllBooks(user);
         return ApiResponse.success(new BooksResponse(result));
     }
+*/
 }

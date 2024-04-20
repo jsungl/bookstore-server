@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LoginRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "Please enter a ID.")
     private String username;
-    @NotBlank
+    @NotBlank(message = "Please enter a password.")
     private String password;
 }

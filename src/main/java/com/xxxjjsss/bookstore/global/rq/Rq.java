@@ -7,7 +7,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @Component
 @RequestScope
 @RequiredArgsConstructor
+@Slf4j
 public class Rq {
 
     private final HttpServletRequest req;
@@ -45,11 +48,11 @@ public class Rq {
         resp.addHeader("Set-Cookie", cookie.toString());
     }
 
-    public String getCookieValue(String name, String defaultValue) {
+    public String getCookieValue(String name) {
         Cookie cookie = getCookie(name);
 
         if (cookie == null) {
-            return defaultValue;
+            return "";
         }
 
         return cookie.getValue();
@@ -73,14 +76,9 @@ public class Rq {
 
 
     /**
-     * 인증객체를 SecurityContext에 저장함으로써 로그인 처리
+     * 스프링 시큐리티 인증 토큰 생성
+     * SecurityContext에 저장함으로써 로그인 처리
      */
-/*
-    public void setLogin(Authentication authToken) {
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-    }
-*/
-
     public void setLogin (SecurityUser securityUser) {
         SecurityContextHolder.getContext().setAuthentication(securityUser.genAuthentication());
     }
@@ -97,7 +95,7 @@ public class Rq {
 
     private SecurityUser getUser() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(context -> context.getAuthentication())
+                .map(SecurityContext::getAuthentication)
                 .filter(authentication -> authentication.getPrincipal() instanceof SecurityUser)
                 .map(authentication -> (SecurityUser) authentication.getPrincipal())
                 .orElse(null);

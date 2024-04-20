@@ -36,7 +36,7 @@ public class MemberController {
     @Getter
     @AllArgsConstructor
     public static class MembersResponse {
-        private final List<MemberResponseDto> members;
+        private final List<MemberDto> members;
     }
 
     /**
@@ -46,8 +46,8 @@ public class MemberController {
     public ApiResponse<MembersResponse> getAllMembers() {
         List<Member> members = memberService.getAllMembers();
 
-        List<MemberResponseDto> collect = members.stream()
-                .map(MemberResponseDto::new)
+        List<MemberDto> collect = members.stream()
+                .map(MemberDto::new)
                 .collect(Collectors.toList());
 
         return ApiResponse.success(new MembersResponse(collect));
@@ -55,17 +55,17 @@ public class MemberController {
 
     @Getter
     @AllArgsConstructor
-    public static class MemberResponse {
-        private final MemberDto member;
+    public static class RegisterResponse {
+        private final MemberResponseDto member;
     }
 
     /**
      * 회원가입
      */
     @PostMapping("/register")
-    public ApiResponse<MemberResponse> join(@Valid @RequestBody MemberRequestDto memberRequestDto) {
+    public ApiResponse<RegisterResponse> join(@Valid @RequestBody MemberRequestDto memberRequestDto) {
         Member member = memberService.join(memberRequestDto);
-        return ApiResponse.success(new MemberResponse(new MemberDto(member)));
+        return ApiResponse.success(new RegisterResponse(new MemberResponseDto(member)));
     }
 
 
@@ -105,7 +105,7 @@ public class MemberController {
     @Getter
     @AllArgsConstructor
     public static class MeResponseBody {
-        private final MemberResponseDto member;
+        private final MemberDto member;
     }
 
 
@@ -116,7 +116,7 @@ public class MemberController {
     @GetMapping("/me")
     public ApiResponse<MeResponseBody> me() {
         Member member = rq.getMember();
-        return ApiResponse.success(new MeResponseBody(new MemberResponseDto(member)));
+        return ApiResponse.success(new MeResponseBody(new MemberDto(member)));
     }
 
 

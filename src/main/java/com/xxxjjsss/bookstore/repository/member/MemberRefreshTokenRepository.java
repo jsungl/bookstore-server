@@ -8,4 +8,7 @@ import java.util.Optional;
 public interface MemberRefreshTokenRepository extends JpaRepository<MemberRefreshToken, Long> {
 
     Optional<MemberRefreshToken> findByMemberId(Long id);
+
+
+    void deleteByMemberId(Long id);
 }

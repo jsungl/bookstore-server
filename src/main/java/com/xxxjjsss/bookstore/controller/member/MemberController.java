@@ -1,23 +1,20 @@
 package com.xxxjjsss.bookstore.controller.member;
 
 import com.xxxjjsss.bookstore.domain.member.Member;
-import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.dto.login.LoginRequestDto;
 import com.xxxjjsss.bookstore.dto.login.LoginResponseDto;
 import com.xxxjjsss.bookstore.dto.member.MemberDto;
 import com.xxxjjsss.bookstore.dto.member.MemberRequestDto;
 import com.xxxjjsss.bookstore.dto.member.MemberResponseDto;
+import com.xxxjjsss.bookstore.dto.member.PasswordDto;
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;
 import com.xxxjjsss.bookstore.global.rq.Rq;
-import com.xxxjjsss.bookstore.global.security.SecurityUser;
 import com.xxxjjsss.bookstore.service.member.MemberService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -79,7 +76,7 @@ public class MemberController {
      * 로그인
      */
     @PostMapping("/login")
-    public ApiResponse<LoginResponseBody> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
+    public ApiResponse<LoginResponseBody> login(@RequestBody LoginRequestDto loginRequestDto) {
         LoginResponseDto dto = memberService.login(loginRequestDto.getUsername(), loginRequestDto.getPassword());
 
         // 토큰 쿠키에 등록
@@ -119,18 +116,18 @@ public class MemberController {
         return ApiResponse.success(new MeResponseBody(new MemberDto(member)));
     }
 
+    /**
+     * 회원탈퇴
+     */
+    @DeleteMapping("/leave")
+    public ApiResponse<Void> leave(@RequestBody PasswordDto passwordDto) {
+        Member member = rq.getMember();
+        memberService.leave(member, passwordDto.getPassword());
 
-/*
-    @Getter
-    @AllArgsConstructor
-    public static class BooksResponse {
-        private final List<BookResponseDto> books;
+        rq.removeCrossDomainCookie("accessToken");
+        rq.removeCrossDomainCookie("refreshToken");
+
+        return ApiResponse.success(null);
     }
 
-    @GetMapping("/book")
-    public ApiResponse<BooksResponse> getAllBooks(@AuthenticationPrincipal SecurityUser user) {
-        List<BookResponseDto> result = memberService.getAllBooks(user);
-        return ApiResponse.success(new BooksResponse(result));
-    }
-*/
 }

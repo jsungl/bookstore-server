@@ -37,9 +37,25 @@ public class ExControllerAdvice {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ApiResponse> ApiExHandle(ApiException e) {
-        ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode());
+        ExceptionDto exceptionDto = new ExceptionDto(e.getErrorCode(), e.getMessage());
+
 
         ApiResponse<ErrorResponse> result = ApiResponse.fail(new ErrorResponse(exceptionDto));
+
+        return ResponseEntity
+                .status(e.getErrorCode().getStatus())
+                .body(result);
+    }
+
+    //로그인 예외처리
+    @ExceptionHandler(SignInException.class)
+    public ResponseEntity<ApiResponse> SignInExHandle(SignInException e) {
+        Map<String, Object> errorMap = new HashMap<>();
+        errorMap.put("errorCode", e.getErrorCode().getCode());
+        errorMap.put("errorMessage", e.getErrorCode().getMsg());
+        errorMap.put("errorField", e.getErrorField());
+
+        ApiResponse<Result> result = ApiResponse.fail(new Result(errorMap));
 
         return ResponseEntity
                 .status(e.getErrorCode().getStatus())

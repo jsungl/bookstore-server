@@ -40,24 +40,9 @@ public class BookService {
     /**
      * 단건 조회
      */
-
-/*
     public BookResponseDto getBookById(Long bookId) {
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new ApiException(ErrorCode.BOOK_NOT_FOUND, "Can not find the requested resource. id=%d".formatted(bookId)));
-        return BookResponseDto.builder().book(book).build();
-    }
-*/
-
-/*
-    public BookResponseDto getBookById(Long bookId) {
+        //Book book = bookRepository.findById(bookId).orElseThrow(() -> new ApiException(ErrorCode.BOOK_NOT_FOUND));
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new ApiException(ErrorCode.BOOK_NOT_FOUND, "Book was not found for parameters %d".formatted(bookId)));
-
-        return BookResponseDto.builder().book(book).build();
-    }
-*/
-
-    public BookResponseDto getBookById(Long bookId) {
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new ApiException(ErrorCode.BOOK_NOT_FOUND));
 
         return BookResponseDto.builder().book(book).build();
     }

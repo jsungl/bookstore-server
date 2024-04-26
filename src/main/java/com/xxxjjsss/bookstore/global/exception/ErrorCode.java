@@ -14,35 +14,35 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     //400
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "E4001", "잘못된 요청입니다."),
-    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "E4002", "유효성 검증에 실패하였습니다."),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "E4001", "Invalid request. The command could not be processed."),
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "E4002", "Validation failed. Please check your input and try again."),
 
 
     //401
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E4011", "인증이 필요합니다."),
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "E4012", "토큰이 유효하지 않습니다."),
-    EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "E4013", "액세스 토큰이 만료되었습니다. 새로고침하거나 다시 로그인해주세요."),
-    WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "E4014", "올바르지 않은 토큰입니다."),
-    PASSWORD_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "E4015", "비밀번호가 일치하지 않습니다."),
-    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "E4016", "갱신 토큰이 만료되었습니다. 다시 로그인해주세요."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "E4011", "Authentication Required. Please log in or sign up to continue."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "E4012", "Invalid Token."),
+    EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "E4013", "Your access token has expired. Please refresh the page or log in again."),
+    WRONG_TYPE_TOKEN(HttpStatus.UNAUTHORIZED, "E4014", "Wrong Type Token."),
+    PASSWORD_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "E4015", "Incorrect Password. The password you entered is incorrect."),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "E4016", "Your refresh token has expired. Please log in again."),
 
 
     //403
-    FORBIDDEN(HttpStatus.FORBIDDEN, "E4031", "접근 권한이 없습니다."),
+    FORBIDDEN(HttpStatus.FORBIDDEN, "E4031", "Access Denied. You do not have the necessary permissions to access this resource."),
     //NOT_MATCHED_WRITER(HttpStatus.FORBIDDEN, ""),
 
     //404
-    BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "E4041", "해당 id의 책을 찾을 수 없습니다."),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E4042", "해당 유저를 찾을 수 없습니다."),
+    BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "E4041", "Book was not found."),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E4042", "User Not Found. The user with the provided ID could not be found."),
 
     //409
-    BOOK_NAME_ALREADY_EXIST(HttpStatus.CONFLICT, "E4091", "이미 존재하는 제목입니다."),
-    USER_ID_ALREADY_EXIST(HttpStatus.CONFLICT, "E4092", "이미 존재하는 아이디입니다."),
-    USER_EMAIL_ALREADY_EXIST(HttpStatus.CONFLICT, "E4093", "이미 존재하는 이메일입니다."),
-    USER_NAME_ALREADY_EXIST(HttpStatus.CONFLICT, "E4094", "이미 존재하는 닉네임입니다."),
+    BOOK_NAME_ALREADY_EXIST(HttpStatus.CONFLICT, "E4091", "The Title you entered already exists."),
+    USER_ID_ALREADY_EXIST(HttpStatus.CONFLICT, "E4092", "The ID you entered already exists."),
+    USER_EMAIL_ALREADY_EXIST(HttpStatus.CONFLICT, "E4093", "The Email you entered already exists."),
+    USER_NAME_ALREADY_EXIST(HttpStatus.CONFLICT, "E4094", "The Nickname you entered already exists."),
 
     //500
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E5001", "서버에 오류가 발생하였습니다.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E5001", "Internal Server Error. The server encountered an internal error or misconfiguration and was unable to complete your request.");
 
     private HttpStatus status;
     private String code;

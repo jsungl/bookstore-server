@@ -1,9 +1,10 @@
 package com.xxxjjsss.bookstore.controller.book;
 
+import com.xxxjjsss.bookstore.domain.member.Member;
 import com.xxxjjsss.bookstore.dto.book.BookRequestDto;
 import com.xxxjjsss.bookstore.dto.book.BookResponseDto;
 import com.xxxjjsss.bookstore.global.RsData.ApiResponse;
-import com.xxxjjsss.bookstore.global.security.SecurityUser;
+import com.xxxjjsss.bookstore.global.rq.Rq;
 import com.xxxjjsss.bookstore.service.book.BookService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +24,7 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+    private final Rq rq;
 
     /**
      * 목록조회
@@ -59,7 +60,7 @@ public class BookController {
     }
 
     @GetMapping("/{bookId}")
-    public ApiResponse<BookResponse> getBook(@PathVariable Long bookId) {
+    public ApiResponse<BookResponse> getBook(@PathVariable("bookId") Long bookId) {
         BookResponseDto result = bookService.getBookById(bookId);
         return ApiResponse.success(new BookResponse(result));
     }
@@ -71,8 +72,11 @@ public class BookController {
      * HTTP 응답 상태 코드 201은 서버에서 리소스가 생성되었음을 나타낸다.
      */
     @PostMapping
-    public ApiResponse<BookResponse> addBook(@Valid @RequestBody BookRequestDto bookDto, @AuthenticationPrincipal SecurityUser user) {
-        BookResponseDto result = bookService.addBook(bookDto, user);
+    public ApiResponse<BookResponse> addBook(@Valid @RequestBody BookRequestDto bookDto) {
+        //BookResponseDto result = bookService.addBook(bookDto, user);
+        Member member = rq.getMember();
+        BookResponseDto result = bookService.addBook(bookDto, member);
+
         return ApiResponse.success(new BookResponse(result));
     }
 
@@ -80,7 +84,7 @@ public class BookController {
      * 수정
      */
     @PutMapping("/{bookId}")
-    public ApiResponse<BookResponse> updateBook(@PathVariable Long bookId, @Valid @RequestBody BookRequestDto bookDto) {
+    public ApiResponse<BookResponse> updateBook(@PathVariable("bookId") Long bookId, @Valid @RequestBody BookRequestDto bookDto) {
         BookResponseDto result = bookService.updateBook(bookId, bookDto);
         return ApiResponse.success(new BookResponse(result));
     }
@@ -90,7 +94,7 @@ public class BookController {
      */
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{bookId}")
-    public void deleteBook(@PathVariable Long bookId) {
+    public void deleteBook(@PathVariable("bookId") Long bookId) {
         bookService.deleteBookById(bookId);
     }
 

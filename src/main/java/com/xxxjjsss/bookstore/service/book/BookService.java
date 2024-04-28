@@ -50,9 +50,11 @@ public class BookService {
     /**
      * 등록
      */
-    public BookResponseDto addBook(BookRequestDto bookDto, SecurityUser user) {
-        String username = user.getUsername();
-        Member member = memberRepository.findByMemberId(username).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+    public BookResponseDto addBook(BookRequestDto bookDto, Member member) {
+
+        if(member == null) {
+            throw new ApiException(ErrorCode.USER_NOT_FOUND);
+        }
 
         Book book = Book.builder()
                 .title(bookDto.getTitle())

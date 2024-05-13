@@ -66,10 +66,13 @@ public class ExControllerAdvice {
     @ExceptionHandler(DuplicatedException.class)
     public ResponseEntity<ApiResponse> DuplicatedExHandle(DuplicatedException e) {
 
+        Map<String, Object> errorFieldMap = new HashMap<>();
+        errorFieldMap.put(e.getErrorField(), e.getErrorCode().getMsg());
+
         Map<String, Object> errorMap = new HashMap<>();
         errorMap.put("errorCode", e.getErrorCode().getCode());
         errorMap.put("errorMessage", e.getErrorCode().getMsg());
-        errorMap.put("errorField", e.getErrorField());
+        errorMap.put("errorField", errorFieldMap);
 
         ApiResponse<Result> result = ApiResponse.fail(new Result(errorMap));
 

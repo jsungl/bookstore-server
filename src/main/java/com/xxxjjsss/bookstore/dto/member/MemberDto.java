@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ public class MemberDto {
     private String nickname;
     private String role;
     private List<BookResponseDto> books;
+    private String createdDate;
 
     @Builder
     public MemberDto(Member member) {
@@ -32,5 +34,6 @@ public class MemberDto {
                         .book(book)
                         .build())
                 .collect(Collectors.toList());
+        this.createdDate = member.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }

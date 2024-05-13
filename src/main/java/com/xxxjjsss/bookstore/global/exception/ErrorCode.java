@@ -32,7 +32,7 @@ public enum ErrorCode {
     //NOT_MATCHED_WRITER(HttpStatus.FORBIDDEN, ""),
 
     //404
-    BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "E4041", "Book was not found."),
+    BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "E4041", "The requested book data could not be found. Please check your request and try again."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E4042", "User Not Found. The user with the provided ID could not be found."),
 
     //409

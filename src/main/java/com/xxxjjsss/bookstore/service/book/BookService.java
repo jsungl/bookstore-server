@@ -42,7 +42,8 @@ public class BookService {
      */
     public BookResponseDto getBookById(Long bookId) {
         //Book book = bookRepository.findById(bookId).orElseThrow(() -> new ApiException(ErrorCode.BOOK_NOT_FOUND));
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new ApiException(ErrorCode.BOOK_NOT_FOUND, "Book was not found for parameters %d".formatted(bookId)));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new ApiException(ErrorCode.BOOK_NOT_FOUND,
+                "The requested book data could not be found for parameters %d. Please check your request and try again.".formatted(bookId)));
 
         return BookResponseDto.builder().book(book).build();
     }

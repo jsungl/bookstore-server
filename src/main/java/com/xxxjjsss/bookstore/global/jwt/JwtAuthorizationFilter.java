@@ -45,8 +45,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String accessToken = rq.getCookieValue("accessToken");
 
-        // log.info("accessToken is {}", !accessToken.isBlank());
-
         try {
             if (!accessToken.isBlank()) {
 
@@ -66,6 +64,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
 
         } catch (ApiException e) {
+            rq.removeCrossDomainCookie("accessToken");
+            rq.removeCrossDomainCookie("refreshToken");
             request.setAttribute("JwtException", e.getErrorCode());
         } catch (JsonProcessingException e) {
             request.setAttribute("JwtException", ErrorCode.WRONG_TYPE_TOKEN);

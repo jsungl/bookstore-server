@@ -33,7 +33,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("request={}", request.getRequestURI());
+//        log.info("request={}", request.getRequestURI());
 
         // 로그인, 회원가입 제외
         if (request.getRequestURI().equals("/api/members/login") || request.getRequestURI().equals("/api/members/register")) {
@@ -41,7 +41,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        log.info("==========인가/권한 검증 : JwtAuthorizationFilter 실행==========");
+//        log.info("==========인가/권한 검증 : JwtAuthorizationFilter 실행==========");
 
         String accessToken = rq.getCookieValue("accessToken");
 

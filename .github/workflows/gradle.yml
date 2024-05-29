@@ -4,8 +4,12 @@ name: bookstore-server deploy to AWS EC2
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'src/main/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'src/main/**'
 
 jobs:
   build:

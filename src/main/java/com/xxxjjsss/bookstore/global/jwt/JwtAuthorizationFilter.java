@@ -36,7 +36,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 //        log.info("request={}", request.getRequestURI());
 
         // 로그인, 회원가입 제외
-        if (request.getRequestURI().equals("/api/members/login") || request.getRequestURI().equals("/api/members/register")) {
+        if (request.getRequestURI().equals("/api/members/login") || request.getRequestURI().equals("/api/members/register")
+            || request.getRequestURI().startsWith("/api/hc")) {
             filterChain.doFilter(request, response);
             return;
         }

@@ -8,4 +8,4 @@
 
 [Frontend Project of service](https://github.com/jsungl/bookstore-client)
 
-자세한 내용은 [블로그](https://morefromjs.notion.site/Github-Actions-Spring-Boot-Next-js-AWS-EC2-Github-Actions-Docker-Nginx-fd3cc9ad34c143f5b89053278e3d486f) 를 참고해주세요.
+자세한 내용은 [블로그](https://www.notion.so/morefromjs/RESTful-API-using-Next-js-and-Spring-Boot-d780bba47f8441f48314914fcddd2871) 를 참고해주세요.

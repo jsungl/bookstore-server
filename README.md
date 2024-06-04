@@ -1,5 +1,5 @@
 [![bookstore-server deploy to AWS EC2](https://github.com/jsungl/bookstore-server/actions/workflows/gradle.yml/badge.svg)](https://github.com/jsungl/bookstore-server/actions/workflows/gradle.yml)
-![Java](https://img.shields.io/badge/java-v17-red?logo=java)
+![Java](https://img.shields.io/badge/java-v17-red?logo=openjdk)
 ![Spring_Boot](https://img.shields.io/badge/Spring_Boot-v3.1.9-green?logo=spring)
 ![Spring_Security](https://img.shields.io/badge/Spring_Security-v6.1.7-green?logo=spring)
 

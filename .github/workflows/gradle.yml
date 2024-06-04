@@ -4,8 +4,14 @@ name: bookstore-server deploy to AWS EC2
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - '.github/**'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - '.github/**'
 
 jobs:
   build:
